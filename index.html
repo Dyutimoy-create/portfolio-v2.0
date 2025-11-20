@@ -1,0 +1,731 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dyutimoy Majumder | RGB Prism V3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SEO & Meta -->
+  <meta name="description" content="The ultimate RGB animated resume of Dyutimoy Majumder.">
+  <meta property="og:title" content="Dyutimoy Majumder - The Ray of Light">
+  <meta property="og:image" content="https://placehold.co/600x400/000000/ffffff?text=RGB+Prism">
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --neon-red: #ff2a6d;
+      --neon-blue: #05d9e8;
+      --neon-green: #00ff9f;
+      --neon-purple: #d902ee;
+      --glass-bg: rgba(10, 10, 15, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.08);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #050505;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: block; 
+      padding: 4rem 1rem;
+      position: relative;
+    }
+
+    /* --- Background Animation --- */
+    #bgCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    /* --- Main Container: Obsidian Glass --- */
+    .prism-container {
+      width: 100%;
+      max-width: 1150px;
+      margin: 0 auto; 
+      background: var(--glass-bg);
+      backdrop-filter: blur(25px) saturate(180%);
+      -webkit-backdrop-filter: blur(25px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 2rem;
+      padding: 3rem;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.7), 
+                  inset 0 0 20px rgba(255,255,255,0.02);
+      position: relative;
+      overflow: hidden;
+      animation: floatUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      transform-style: preserve-3d;
+      transition: transform 0.1s ease;
+    }
+
+    /* Spotlight Effect Overlay */
+    .spotlight-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(
+        800px circle at var(--mouse-x) var(--mouse-y), 
+        rgba(255, 255, 255, 0.06),
+        transparent 40%
+      );
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .prism-container:hover .spotlight-overlay {
+      opacity: 1;
+    }
+
+    /* Top RGB Line */
+    .prism-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-purple), var(--neon-blue), var(--neon-green));
+      background-size: 300% 100%;
+      animation: rgbFlow 5s linear infinite;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 5;
+    }
+
+    @keyframes rgbFlow {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 300% 0%; }
+    }
+
+    @keyframes floatUp {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* --- Typography & Glitch Effect --- */
+    .glitch-wrapper {
+      display: inline-block;
+      position: relative;
+    }
+
+    .glitch-name {
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -1px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Glitch on Hover */
+    .glitch-wrapper:hover .glitch-name {
+      animation: glitch-anim 0.3s infinite;
+    }
+
+    .glitch-wrapper:hover::before,
+    .glitch-wrapper:hover::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #050505;
+    }
+
+    .glitch-wrapper:hover::before {
+      left: 2px;
+      text-shadow: -1px 0 var(--neon-red);
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim-2 5s infinite linear alternate-reverse;
+    }
+
+    .glitch-wrapper:hover::after {
+      left: -2px;
+      text-shadow: -1px 0 var(--neon-blue);
+      clip: rect(44px, 450px, 56px, 0);
+      animation: glitch-anim-3 5s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+
+    /* --- Ray of Light Animation --- */
+    .ray-of-light-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      background: linear-gradient(
+        to right, 
+        var(--neon-red), 
+        var(--neon-purple), 
+        var(--neon-blue), 
+        var(--neon-green), 
+        var(--neon-red)
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: shine 3s linear infinite;
+      filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    /* --- Section Headers --- */
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: #fff;
+      position: relative;
+    }
+    
+    .section-title i {
+      background: linear-gradient(135deg, var(--neon-blue), var(--neon-purple));
+      -webkit-background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 5px rgba(5, 217, 232, 0.5));
+    }
+
+    .section-title::after {
+      content: '';
+      flex-grow: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--glass-border), transparent);
+      margin-left: 1rem;
+    }
+
+    /* --- Neon RGB Skill Bars --- */
+    .skill-container {
+      margin-bottom: 1.5rem;
+    }
+    .skill-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #ccc;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .skill-pct {
+      color: var(--neon-green);
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(0, 255, 159, 0.5);
+    }
+    .skill-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+    }
+    .skill-fill {
+      height: 100%;
+      width: 0; 
+      background: linear-gradient(90deg, var(--neon-red), var(--neon-purple), var(--neon-blue), var(--neon-green));
+      background-size: 200% 100%;
+      border-radius: 10px;
+      box-shadow: 0 0 15px var(--neon-purple);
+      transition: width 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+      animation: rgbFlow 3s linear infinite;
+    }
+
+    /* --- Interactive List Items --- */
+    .glow-list-item {
+      position: relative;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      margin-bottom: 0.5rem;
+      border-radius: 0.75rem;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .glow-list-item i {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--neon-purple);
+      transition: all 0.3s ease;
+    }
+    .glow-list-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+      transform: translateX(5px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .glow-list-item:hover i {
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green);
+    }
+
+    /* --- Creative Holocards (3D Tilt) --- */
+    .holo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      perspective: 1000px; 
+    }
+
+    .holo-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--glass-border);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      text-align: center;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.1s ease-out, border-color 0.3s, box-shadow 0.3s;
+      transform-style: preserve-3d;
+    }
+
+    .holo-card-content {
+      position: relative;
+      z-index: 2;
+      transform: translateZ(20px); 
+    }
+
+    .holo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      z-index: 1;
+    }
+
+    .holo-card:hover::before { opacity: 1; }
+    .holo-card:nth-child(1):hover { border-color: var(--neon-red); box-shadow: 0 10px 30px rgba(255, 42, 109, 0.3); }
+    .holo-card:nth-child(1) i { color: var(--neon-red); }
+    .holo-card:nth-child(2):hover { border-color: var(--neon-blue); box-shadow: 0 10px 30px rgba(5, 217, 232, 0.3); }
+    .holo-card:nth-child(2) i { color: var(--neon-blue); }
+    .holo-card:nth-child(3):hover { border-color: var(--neon-green); box-shadow: 0 10px 30px rgba(0, 255, 159, 0.3); }
+    .holo-card:nth-child(3) i { color: var(--neon-green); }
+    .holo-card:nth-child(4):hover { border-color: var(--neon-purple); box-shadow: 0 10px 30px rgba(217, 2, 238, 0.3); }
+    .holo-card:nth-child(4) i { color: var(--neon-purple); }
+    .holo-card:nth-child(5):hover { border-color: #ff9f43; box-shadow: 0 10px 30px rgba(255, 159, 67, 0.3); }
+    .holo-card:nth-child(5) i { color: #ff9f43; }
+
+    .holo-title {
+      display: block;
+      font-weight: 700;
+      margin-top: 0.8rem;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .holo-desc {
+      display: block;
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 0.2rem;
+    }
+
+    /* --- Social Icons --- */
+    .social-icon {
+      width: 3rem;
+      height: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .social-icon:hover { transform: scale(1.1) rotate(360deg); background: #fff; }
+    .social-icon.yt:hover { color: #ff0000; box-shadow: 0 0 20px #ff0000; }
+    .social-icon.fb:hover { color: #1877f2; box-shadow: 0 0 20px #1877f2; }
+    .social-icon.in:hover { color: #e1306c; box-shadow: 0 0 20px #e1306c; }
+    .social-icon.bg:hover { color: #f39c12; box-shadow: 0 0 20px #f39c12; }
+    .social-icon.wb:hover { color: #2ecc71; box-shadow: 0 0 20px #2ecc71; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .prism-container { padding: 1.5rem; }
+      .ray-of-light-text { font-size: 1.2rem; letter-spacing: 0.1em; }
+      body { padding: 2rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Graphics -->
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="prism-container" id="mainContainer">
+    <div class="spotlight-overlay"></div>
+    
+    <!-- Header -->
+    <header class="text-center mb-12 relative z-10">
+      <div class="glitch-wrapper" data-text="Dyutimoy Majumder">
+        <h1 class="glitch-name text-5xl md:text-7xl font-bold text-white mb-2 tracking-tight cursor-default">
+          Dyutimoy Majumder
+        </h1>
+      </div>
+      <p class="text-gray-400 text-lg mb-6 font-light tracking-wide">
+        Customer Care & Relationship Management Professional
+      </p>
+      
+      <!-- The RGB Animation Section -->
+      <div class="my-8 py-4 border-y border-gray-800">
+        <div class="ray-of-light-text text-center text-2xl md:text-3xl">
+          Dyutimoy The Ray of Light
+        </div>
+      </div>
+
+      <div class="flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+        <span class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition">
+          <i class="fas fa-phone text-green-400"></i> +91 82505 53471
+        </span>
+        <span class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition">
+          <i class="fas fa-envelope text-blue-400"></i> dyutimoymajumder@gmail.com
+        </span>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid lg:grid-cols-12 gap-10 relative z-10">
+      
+      <!-- Left Column (4/12) -->
+      <div class="lg:col-span-4 space-y-10">
+        
+        <!-- Summary -->
+        <section>
+          <h2 class="section-title"><i class="fas fa-user-astronaut"></i> Profile</h2>
+          <p class="text-gray-300 leading-relaxed font-light">
+            Highly committed and results-driven professional. Enthusiastic about collaborating with teams to achieve organizational goals. Skilled at multitasking, customer relationship management, and process auditing.
+          </p>
+        </section>
+
+        <!-- Proficiency Bars -->
+        <section>
+          <h2 class="section-title"><i class="fas fa-bolt"></i> Proficiency</h2>
+          
+          <div class="skill-container">
+            <div class="skill-label"><span>Customer Relations</span><span class="skill-pct">99%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width: 99%"></div></div>
+          </div>
+          
+          <div class="skill-container">
+            <div class="skill-label"><span>Communication (Eng/Hin/Ben)</span><span class="skill-pct">95%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width: 95%"></div></div>
+          </div>
+
+          <div class="skill-container">
+            <div class="skill-label"><span>Process Auditing</span><span class="skill-pct">85%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width: 85%"></div></div>
+          </div>
+
+          <div class="skill-container">
+            <div class="skill-label"><span>Tools (MS Office/Tally)</span><span class="skill-pct">75%</span></div>
+            <div class="skill-track"><div class="skill-fill" style="width: 75%"></div></div>
+          </div>
+        </section>
+
+        <!-- NEW: Skill Matrix (Tags) -->
+        <section>
+            <h2 class="section-title"><i class="fas fa-microchip"></i> Skill Matrix</h2>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-purple-500/20 hover:border-purple-500 transition cursor-default">Leadership</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-blue-500/20 hover:border-blue-500 transition cursor-default">Teamwork & Organizing</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-red-500/20 hover:border-red-500 transition cursor-default">Pressure Handling</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-green-500/20 hover:border-green-500 transition cursor-default">Multi-tasking</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-yellow-500/20 hover:border-yellow-500 transition cursor-default">AI Prompting</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-cyan-500/20 hover:border-cyan-500 transition cursor-default">Tally Prime</span>
+                <span class="px-3 py-1.5 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-pink-500/20 hover:border-pink-500 transition cursor-default">Photoshop CS3 & CS6</span>
+            </div>
+        </section>
+
+        <!-- Hobbies -->
+        <section>
+          <h2 class="section-title"><i class="fas fa-gamepad"></i> Interests</h2>
+          <div class="flex flex-wrap gap-2">
+            <span class="px-3 py-1 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-white/10 transition cursor-default hover:text-purple-400">Photography</span>
+            <span class="px-3 py-1 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-white/10 transition cursor-default hover:text-blue-400">Video Editing</span>
+            <span class="px-3 py-1 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-white/10 transition cursor-default hover:text-green-400">AI Creation</span>
+            <span class="px-3 py-1 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-white/10 transition cursor-default hover:text-red-400">Music</span>
+            <span class="px-3 py-1 rounded-md bg-white/5 text-sm border border-white/10 hover:bg-white/10 transition cursor-default hover:text-yellow-400">Writing & Composition</span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- Right Column (8/12) -->
+      <div class="lg:col-span-8 space-y-10">
+        
+        <!-- Experience -->
+        <section>
+          <h2 class="section-title"><i class="fas fa-briefcase"></i> Experience</h2>
+          <div class="mb-6 relative pl-6 border-l-2 border-purple-500/30">
+            <div class="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-purple-500 shadow-[0_0_10px_#d902ee]"></div>
+            <h3 class="text-xl font-bold text-white">Customer Care Executive</h3>
+            <p class="text-purple-400 text-sm mb-3">Meesho | 2022 - 2024</p>
+            <ul class="text-gray-300 space-y-2">
+              <li class="glow-list-item"><i class="fas fa-chevron-right"></i>Managed customer and seller relations ensuring satisfaction.</li>
+              <li class="glow-list-item"><i class="fas fa-chevron-right"></i>Audited 3PL processes for quality assurance (Image & Video).</li>
+              <li class="glow-list-item"><i class="fas fa-chevron-right"></i>Resolved queries effectively under high-pressure scenarios.</li>
+              <li class="glow-list-item"><i class="fas fa-chevron-right"></i>Monitored advertisement campaigns and optimized workflows.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Education & Achievements -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <section>
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Education</h2>
+            <ul class="text-gray-400 space-y-4">
+              <li class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-white/20 transition">
+                <strong class="text-white block text-lg">Commerce, WBBSE (83%)</strong>
+                <span class="text-sm text-gray-500">Completed 2022</span>
+              </li>
+              <li class="bg-white/5 p-4 rounded-lg border border-white/5 hover:border-white/20 transition">
+                <strong class="text-white block text-lg">High School, WBBSE (55%)</strong>
+                <span class="text-sm text-gray-500">Completed 2020</span>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="section-title"><i class="fas fa-trophy"></i> Certifications</h2>
+            <ul class="text-gray-400 space-y-3 text-sm">
+              <li class="flex items-start gap-3 bg-white/5 p-3 rounded-lg hover:bg-white/10 transition">
+                <i class="fas fa-certificate text-cyan-400 text-xl mt-1"></i> 
+                <div>
+                  <strong class="block text-white">Lets Upgrade Bootcamps (Beginner)</strong>
+                  <span class="text-xs leading-tight block mt-1">Python, Power BI, JS, HTML, Flutter, RAG Chatbot, Gemini Story Gen.</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3 bg-white/5 p-3 rounded-lg hover:bg-white/10 transition">
+                <i class="fas fa-award text-yellow-400 text-xl mt-1"></i> 
+                <div>
+                  <strong class="block text-white">Diploma in Junior IT</strong>
+                  <span class="text-xs">Class VI & VII (Govt. of India Recognized)</span>
+                </div>
+              </li>
+              <li class="flex items-start gap-3 bg-white/5 p-3 rounded-lg hover:bg-white/10 transition">
+                <i class="fas fa-medal text-yellow-400 text-xl mt-1"></i> 
+                <div>
+                  <strong class="block text-white">All India Rank 211</strong>
+                  <span>English Olympiad</span>
+                </div>
+              </li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- Creative Showcase (Holocards) -->
+        <section>
+          <h2 class="section-title"><i class="fas fa-layer-group"></i> Creative Showcase</h2>
+          <div class="holo-grid">
+            
+            <a href="https://dyutimoy-create.github.io/hyper-matter/" target="_blank" class="holo-card">
+              <div class="holo-card-content">
+                <i class="fas fa-atom text-4xl mb-3"></i>
+                <span class="holo-title">Hyper Matter</span>
+                <span class="holo-desc">Dynamic 3D Environment</span>
+              </div>
+            </a>
+
+            <a href="https://dyutimoy-create.github.io/neon-cosmic-horizon/" target="_blank" class="holo-card">
+              <div class="holo-card-content">
+                <i class="fas fa-infinity text-4xl mb-3"></i>
+                <span class="holo-title">Cosmic Horizon</span>
+                <span class="holo-desc">Interactive Gradient</span>
+              </div>
+            </a>
+
+            <a href="https://dyutimoy-create.github.io/Omniverse-Atomic/" target="_blank" class="holo-card">
+              <div class="holo-card-content">
+                <i class="fas fa-project-diagram text-4xl mb-3"></i>
+                <span class="holo-title">Omniverse</span>
+                <span class="holo-desc">Particle Physics</span>
+              </div>
+            </a>
+
+            <a href="https://dyutimoy-create.github.io/flowerworks-studio/" target="_blank" class="holo-card">
+              <div class="holo-card-content">
+                <i class="fas fa-palette text-4xl mb-3"></i>
+                <span class="holo-title">Flowerworks</span>
+                <span class="holo-desc">Artistic Canvas</span>
+              </div>
+            </a>
+
+            <a href="https://dyutimoy-create.github.io/fireworks-show/" target="_blank" class="holo-card">
+              <div class="holo-card-content">
+                <i class="fas fa-fire text-4xl mb-3"></i>
+                <span class="holo-title">Fireworks</span>
+                <span class="holo-desc">Classic Show</span>
+              </div>
+            </a>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Footer / Connect -->
+    <div class="mt-16 pt-8 border-t border-gray-800 text-center relative z-10">
+      <h3 class="text-xl font-light mb-6 text-gray-300">Connect across the multiverse</h3>
+      <div class="flex justify-center gap-4 flex-wrap">
+        <a href="https://www.youtube.com/@CreatingAsImaginedWithAI" target="_blank" class="social-icon yt"><i class="fab fa-youtube"></i></a>
+        <a href="https://www.facebook.com/virdyutimoy" target="_blank" class="social-icon fb"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/i_am_the_lord_of_kings/" target="_blank" class="social-icon in"><i class="fab fa-instagram"></i></a>
+        <a href="https://dyutimoymajumder.blogspot.com" target="_blank" class="social-icon bg"><i class="fas fa-blog"></i></a>
+        <a href="https://sites.google.com/view/creatingasimaginedwithai/home" target="_blank" class="social-icon wb"><i class="fas fa-globe"></i></a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // --- RGB Fluid Background Animation ---
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let orbs = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Orb {
+      constructor() {
+        this.reset();
+      }
+      
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.radius = Math.random() * 100 + 50;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        // RGB colors
+        const colors = [
+          {r:255, g:42, b:109}, // Red
+          {r:5, g:217, b:232},  // Blue
+          {r:0, g:255, b:159},  // Green
+          {r:217, g:2, b:238}   // Purple
+        ];
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.alpha = Math.random() * 0.1 + 0.05;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Bounce off walls
+        if(this.x < -100 || this.x > width + 100) this.vx *= -1;
+        if(this.y < -100 || this.y > height + 100) this.vy *= -1;
+      }
+
+      draw() {
+        ctx.beginPath();
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+        gradient.addColorStop(0, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, ${this.alpha})`);
+        gradient.addColorStop(1, `rgba(${this.color.r}, ${this.color.g}, ${this.color.b}, 0)`);
+        ctx.fillStyle = gradient;
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Create Orbs
+    for(let i=0; i<25; i++) orbs.push(new Orb());
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      // Composite operation for blending light
+      ctx.globalCompositeOperation = 'screen';
+      
+      orbs.forEach(orb => {
+        orb.update();
+        orb.draw();
+      });
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // --- Advanced Interactive Logic ---
+    const container = document.getElementById('mainContainer');
+    const holoCards = document.querySelectorAll('.holo-card');
+
+    // Global Container Tilt & Spotlight
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // Update CSS variables for spotlight overlay
+      container.style.setProperty('--mouse-x', `${x}px`);
+      container.style.setProperty('--mouse-y', `${y}px`);
+
+      // Subtle container tilt
+      const xPct = x / rect.width;
+      const yPct = y / rect.height;
+      const rotateX = (0.5 - yPct) * 2; 
+      const rotateY = (xPct - 0.5) * 2;
+      container.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      container.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg)`;
+    });
+
+    // Individual Card 3D Tilt Effect
+    holoCards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        e.stopPropagation(); // Prevent bubbling to container sometimes
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg tilt
+        const rotateY = ((x - centerX) / centerX) * 10;
+
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+      });
+    });
+
+    // --- Trigger Skill Animations on Load ---
+    window.onload = () => {
+      document.querySelectorAll('.skill-fill').forEach(fill => {
+        const width = fill.style.width;
+        fill.style.width = '0';
+        setTimeout(() => {
+          fill.style.width = width;
+        }, 500);
+      });
+    };
+  </script>
+</body>
+</html>
